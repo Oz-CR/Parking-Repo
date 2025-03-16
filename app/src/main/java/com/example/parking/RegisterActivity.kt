@@ -4,6 +4,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.parking.databinding.ActivityRegisterBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -23,6 +29,7 @@ class RegisterActivity : AppCompatActivity() {
             if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password == confirmPassword) {
                     Toast.makeText(this, "Registrando...", Toast.LENGTH_SHORT).show()
+
                 } else {
                     Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                 }
@@ -30,7 +37,40 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
+    private fun getRetrofit(): Retrofit{
+            return Retrofit.Builder()
+                .baseUrl("")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+    }
 
+    private fun registerUser(registerBody: RegisterBody) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = getRetrofit().create(APIService::class.java).registerUser(registerBody)
+                withContext(Dispatchers.Main) {
+                    if(response.isSuccessful) {
+                        val registerResponse = response.body()
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "${registerResponse?.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "Error en registro: ${response.errorBody()?.string()}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@RegisterActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 }
