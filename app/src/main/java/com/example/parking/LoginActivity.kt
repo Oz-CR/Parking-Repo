@@ -27,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 Toast.makeText(this, "Iniciando sesión...", Toast.LENGTH_SHORT).show()
+                login(LoginBody(email, password))
             } else {
                 Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             }
@@ -35,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl("https://863c-187-190-56-49.ngrok-free.app/api/auth/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

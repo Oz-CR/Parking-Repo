@@ -29,19 +29,22 @@ class RegisterActivity : AppCompatActivity() {
             if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password == confirmPassword) {
                     Toast.makeText(this, "Registrando...", Toast.LENGTH_SHORT).show()
+                    registerUser(RegisterBody(name, email, password))
 
                 } else {
                     Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+
                 }
             } else {
                 Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             }
+
         }
     }
 
     private fun getRetrofit(): Retrofit{
             return Retrofit.Builder()
-                .baseUrl("")
+                .baseUrl("https://863c-187-190-56-49.ngrok-free.app/api/auth/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
     }
