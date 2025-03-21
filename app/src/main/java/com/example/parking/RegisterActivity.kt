@@ -21,15 +21,15 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.registerButton.setOnClickListener {
-            val name = binding.name.text.toString()
+            val username = binding.name.text.toString()
             val email = binding.emailcrear.text.toString()
             val password = binding.passworcuenta.text.toString()
             val confirmPassword = binding.confirmPasswordcuenta.text.toString()
 
-            if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
+            if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password == confirmPassword) {
                     Toast.makeText(this, "Registrando...", Toast.LENGTH_SHORT).show()
-
+                    registerUser(RegisterBody(email, password, username))
                 } else {
                     Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                 }
@@ -41,7 +41,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun getRetrofit(): Retrofit{
             return Retrofit.Builder()
-                .baseUrl("")
+                .baseUrl("https://a7b1-177-244-54-50.ngrok-free.app/api/auth/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
     }
