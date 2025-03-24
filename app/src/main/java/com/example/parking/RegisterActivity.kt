@@ -41,7 +41,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun getRetrofit(): Retrofit{
             return Retrofit.Builder()
-                .baseUrl("https://a7b1-177-244-54-50.ngrok-free.app/api/auth/")
+                .baseUrl("https://c378-2806-101e-d-a0d1-3d62-eba2-26a8-c44f.ngrok-free.app/api/auth/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
     }
