@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Parking</string>
+    <string name="dashboard">Dashboard</string>
 </resources>

@@ -45,6 +45,8 @@ dependencies {
     implementation ("com.google.android.material:material:1.11.0")
     implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation ("com.airbnb.android:lottie:6.1.0")
+    implementation ("com.intuit.sdp:sdp-android:1.0.6")
+    implementation ("com.intuit.ssp:ssp-android:1.0.6")
 
     implementation ("androidx.recyclerview:recyclerview:1.2.1")
     implementation ("androidx.cardview:cardview:1.0.0")
@@ -52,6 +54,9 @@ dependencies {
     implementation ("androidx.appcompat:appcompat:1.4.0")
     implementation ("com.google.android.material:material:1.4.0")
     implementation ("androidx.constraintlayout:constraintlayout:2.1.0")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
     implementation ("androidx.cardview:cardview:1.0.0")
     implementation ("androidx.recyclerview:recyclerview:1.3.2")

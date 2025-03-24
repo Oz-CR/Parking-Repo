@@ -22,15 +22,15 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.registerButton.setOnClickListener {
-            val name = binding.name.text.toString()
+            val username = binding.name.text.toString()
             val email = binding.emailcrear.text.toString()
             val password = binding.passworcuenta.text.toString()
             val confirmPassword = binding.confirmPasswordcuenta.text.toString()
 
-            if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
+            if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password == confirmPassword) {
                     Toast.makeText(this, "Registrando...", Toast.LENGTH_SHORT).show()
-                    registerUser(RegisterBody(name, email, password))
+                    registerUser(RegisterBody(email, password, username))
                 } else {
                     Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                 }
@@ -40,11 +40,11 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://863c-187-190-56-49.ngrok-free.app/api/auth/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    private fun getRetrofit(): Retrofit{
+            return Retrofit.Builder()
+                .baseUrl("https://c378-2806-101e-d-a0d1-3d62-eba2-26a8-c44f.ngrok-free.app/api/auth/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
     }
 
     private fun registerUser(registerBody: RegisterBody) {
@@ -52,21 +52,13 @@ class RegisterActivity : AppCompatActivity() {
             try {
                 val response = getRetrofit().create(APIService::class.java).registerUser(registerBody)
                 withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
+                    if(response.isSuccessful) {
                         val registerResponse = response.body()
                         Toast.makeText(
                             this@RegisterActivity,
                             "${registerResponse?.message}",
                             Toast.LENGTH_LONG
                         ).show()
-
-                        // Pasar datos a ProfileActivity después del registro exitoso
-                        val intent = Intent(this@RegisterActivity, ProfileActivity::class.java).apply {
-                            putExtra("USER_NAME", registerBody.username)
-                            putExtra("USER_EMAIL", registerBody.email)
-                        }
-                        startActivity(intent)
-                        finish() // Cierra RegisterActivity
                     } else {
                         Toast.makeText(
                             this@RegisterActivity,
