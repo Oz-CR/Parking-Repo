@@ -7,35 +7,33 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var recyclerView: RecyclerView
+    private val parkingLotList = mutableListOf<Item>()
+    private lateinit var adapter: ItemAdapter
+
+    // Constantes para SharedPreferences
+    private val PREFS_NAME = "MyPrefs"
+    private val KEY_USERNAME = "username"
+    private val KEY_PASSWORD = "password"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // Configurar el RecyclerView
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        // Inicializar SharedPreferences y crear usuario por defecto
+        val sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        if (!sharedPreferences.contains(KEY_USERNAME)) {
+            val editor = sharedPreferences.edit()
+            editor.putString(KEY_USERNAME, "admin")
+            editor.putString(KEY_PASSWORD, "12345")
+            editor.apply()
+        }
+
+        // Inicializar RecyclerView
+        recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        // Lista de ejemplo con datos (puedes reemplazar estas URLs con tus propias imágenes)
-        val items = listOf(
-            Item(
-                "Parking Chido",
-                "Un lugar cool para estacionarte en el centro",
-                "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
-            ),
-            Item(
-                "Estacionamiento Nice",
-                "Super buen spot con seguridad 24/7",
-                "https://images.unsplash.com/photo-1506521781263-d8422e7e015f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
-            ),
-            Item(
-                "Parking Pro",
-                "El más rifado de la zona",
-                "https://images.unsplash.com/photo-1517508736879-55003e166ee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
-            )
-        )
-
-        // Configurar el adapter
-        recyclerView.adapter = ItemAdapter(items)
+        adapter = ItemAdapter(parkingLotList)
+        recyclerView.adapter = adapter
     }
 }

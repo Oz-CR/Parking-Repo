@@ -1,5 +1,6 @@
 package com.example.parking
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -30,23 +31,20 @@ class RegisterActivity : AppCompatActivity() {
                 if (password == confirmPassword) {
                     Toast.makeText(this, "Registrando...", Toast.LENGTH_SHORT).show()
                     registerUser(RegisterBody(name, email, password))
-
                 } else {
                     Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
-
                 }
             } else {
                 Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             }
-
         }
     }
 
-    private fun getRetrofit(): Retrofit{
-            return Retrofit.Builder()
-                .baseUrl("https://863c-187-190-56-49.ngrok-free.app/api/auth/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+    private fun getRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://863c-187-190-56-49.ngrok-free.app/api/auth/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 
     private fun registerUser(registerBody: RegisterBody) {
@@ -54,13 +52,21 @@ class RegisterActivity : AppCompatActivity() {
             try {
                 val response = getRetrofit().create(APIService::class.java).registerUser(registerBody)
                 withContext(Dispatchers.Main) {
-                    if(response.isSuccessful) {
+                    if (response.isSuccessful) {
                         val registerResponse = response.body()
                         Toast.makeText(
                             this@RegisterActivity,
                             "${registerResponse?.message}",
                             Toast.LENGTH_LONG
                         ).show()
+
+                        // Pasar datos a ProfileActivity después del registro exitoso
+                        val intent = Intent(this@RegisterActivity, ProfileActivity::class.java).apply {
+                            putExtra("USER_NAME", registerBody.username)
+                            putExtra("USER_EMAIL", registerBody.email)
+                        }
+                        startActivity(intent)
+                        finish() // Cierra RegisterActivity
                     } else {
                         Toast.makeText(
                             this@RegisterActivity,

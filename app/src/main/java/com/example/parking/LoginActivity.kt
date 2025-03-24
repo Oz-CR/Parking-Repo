@@ -1,16 +1,11 @@
 package com.example.parking
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.parking.databinding.ActivityLoginBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginActivity : AppCompatActivity() {
 
@@ -21,55 +16,44 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Crear credenciales por defecto si no existen
+        val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+        if (!sharedPreferences.contains("username")) {
+            val editor = sharedPreferences.edit()
+            editor.putString("username", "admin")
+            editor.putString("password", "12345")
+            editor.apply()
+        }
+
         binding.loginButton.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                Toast.makeText(this, "Iniciando sesión...", Toast.LENGTH_SHORT).show()
-                login(LoginBody(email, password))
+                if (verificarCredenciales(email, password)) {
+                    Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://863c-187-190-56-49.ngrok-free.app/api/auth/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
+    private fun verificarCredenciales(email: String, password: String): Boolean {
+        val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+        val savedUsername = sharedPreferences.getString("username", null)
+        val savedPassword = sharedPreferences.getString("password", null)
 
-    private fun login(loginBody: LoginBody) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = getRetrofit().create(APIService::class.java).login(loginBody)
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
-                        val loggedUser = response.body()
-                        guardaTokenSP(loggedUser?.token, this@LoginActivity)
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Iniciaste sesion correctamente",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            } catch (e: Exception) {
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Error al iniciar sesion: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+        if (savedUsername == null || savedPassword == null) {
+            Toast.makeText(this, "Error: No hay credenciales guardadas.", Toast.LENGTH_SHORT).show()
+            return false
         }
-    }
 
-    private fun guardaTokenSP(token: String?, context: Context) {
-        val sharedPreferences = context.getSharedPreferences("userToken", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("token", token)
-        editor.apply()
+        return email == savedUsername && password == savedPassword
     }
 }
