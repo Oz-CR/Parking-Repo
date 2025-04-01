@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Capa 1: Sombra (transparente para evitar artefactos) -->
+    <item
+        android:left="10dp"
+        android:right="10dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp"/>
+            <solid android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+
+    <item
+        android:top="1dp"
+        android:bottom="1dp"
+        android:left="20dp"
+        android:right="20dp">
+        <shape android:shape="rectangle">
+            <solid android:color="?android:attr/fastScrollTextColor"/>
+            <corners android:radius="24dp"/>
+        </shape>
+    </item>
+</layer-list>

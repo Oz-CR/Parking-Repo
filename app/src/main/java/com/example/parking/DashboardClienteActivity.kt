@@ -1,20 +1,22 @@
 package com.example.parking
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.DialogFragment
 
 class DashboardClienteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_dashboard_cliente)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        val notiBoton: ImageView = findViewById(R.id.notifsBtn)
+
+        notiBoton.setOnClickListener {
+            val dialog = NotificacionesActivity().apply {
+                setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundedDialog)
+            }
+            dialog.show(supportFragmentManager, "notificaciones")
         }
     }
 }

@@ -28,8 +28,6 @@ class ProfileActivity : AppCompatActivity() {
         // Referencias a los elementos del layout
         val userNameTextView = findViewById<TextView>(R.id.userName)
         val userEmailTextView = findViewById<TextView>(R.id.userEmail)
-        userAvatar = findViewById<ImageView>(R.id.userAvatar)
-        val uploadButton = findViewById<Button>(R.id.uploadButton)
 
         // Obtener datos del Intent
         val name = intent.getStringExtra("USER_NAME") ?: "Nombre no disponible"
@@ -39,10 +37,6 @@ class ProfileActivity : AppCompatActivity() {
         userNameTextView.text = name
         userEmailTextView.text = email
 
-        // Configurar el botón para subir la foto
-        uploadButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            pickImageLauncher.launch(intent)
-        }
+
     }
 }
