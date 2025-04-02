@@ -31,8 +31,6 @@ class MainActivity : AppCompatActivity() {
             editor.apply()
         }
 
-        val dialog = NotificacionesActivity()
-        dialog.show(supportFragmentManager, "NotificacionesActivity")
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
