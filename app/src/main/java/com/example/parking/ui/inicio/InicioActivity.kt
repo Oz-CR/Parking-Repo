@@ -1,8 +1,11 @@
-package com.example.parking
+package com.example.parking.ui.inicio
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.parking.ui.auth.LoginActivity
+import com.example.parking.R
+import com.example.parking.ui.auth.RegisterActivity
 
 class InicioActivity : AppCompatActivity() {
 

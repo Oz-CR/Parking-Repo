@@ -1,10 +1,13 @@
-package com.example.parking
+package com.example.parking.ui.main
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.parking.ui.components.Item
+import com.example.parking.ui.components.ItemAdapter
+import com.example.parking.R
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView

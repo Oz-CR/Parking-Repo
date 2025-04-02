@@ -1,34 +1,37 @@
-package com.example.parking
+package com.example.parking.ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.parking.databinding.ActivityDashboardBinding
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.parking.ui.profile.ProfileActivity
+import com.example.parking.R
+import com.example.parking.databinding.ActivityDashboardClienteBinding
 
-class DashboardActivity : AppCompatActivity() {
+class DashboardClienteActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityDashboardBinding
+    private lateinit var binding: ActivityDashboardClienteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityDashboardBinding.inflate(layoutInflater)
+        binding = ActivityDashboardClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        binding.profileBtn.setOnClickListener(){
+            irAPerfil()
+        }
     }
 
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://3b94-177-244-54-50.ngrok-free.app/api/auth/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    private fun irAPerfil() {
+        val intent = Intent(this, ProfileActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.parking
+package com.example.parking.data.model
 
 data class RegisterBody(
     var email: String,

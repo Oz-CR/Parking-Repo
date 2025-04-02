@@ -1,17 +1,17 @@
-package com.example.parking
+package com.example.parking.ui.auth
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.parking.LoginBody
+import com.example.parking.data.respository.AuthRepository
+import com.example.parking.ui.dashboard.DashboardActivity
 import com.example.parking.databinding.ActivityLoginBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.parking.ui.dashboard.DashboardClienteActivity
+import com.example.parking.viewmodel.LoginViewModel
+import com.example.parking.viewmodel.LoginViewModelFactory
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
@@ -19,11 +19,26 @@ import io.jsonwebtoken.security.Keys
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val authRepository = AuthRepository()
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(authRepository))[LoginViewModel::class.java]
+
+        loginViewModel.loginResult.observe(this) {result ->
+            Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+        }
+
+        loginViewModel.token.observe(this) {token ->
+            token?.let {
+                guardaTokenSP(it)
+                irADashboard(it)
+            }
+        }
 
         binding.loginButton.setOnClickListener {
             val email = binding.email.text.toString()
@@ -31,48 +46,15 @@ class LoginActivity : AppCompatActivity() {
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 Toast.makeText(this, "Iniciando sesión...", Toast.LENGTH_SHORT).show()
-                login(LoginBody(email, password))
+                loginViewModel.loginUser(LoginBody(email, password))
             } else {
                 Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://3b94-177-244-54-50.ngrok-free.app/api/auth/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private fun login(loginBody: LoginBody)  {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = getRetrofit().create(APIService::class.java).login(loginBody)
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
-                        val loggedUser = response.body()
-                        guardaTokenSP(loggedUser?.token, this@LoginActivity)
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Iniciaste sesion correctamente",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        irADashboard(loggedUser?.token)
-                    }
-                }
-            } catch (e: Exception) {
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Error al iniciar sesion: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-    }
-
-    private fun guardaTokenSP(token: String?, context: Context) {
-        val sharedPreferences = context.getSharedPreferences("userToken", MODE_PRIVATE)
+    private fun guardaTokenSP(token: String?) {
+        val sharedPreferences = getSharedPreferences("userToken", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("token", token)
         editor.apply()

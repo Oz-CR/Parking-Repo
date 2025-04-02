@@ -1,9 +1,10 @@
-package com.example.parking
+package com.example.parking.ui.detail
 
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.parking.R
 import com.squareup.picasso.Picasso
 
 class DetailActivity : AppCompatActivity() {
