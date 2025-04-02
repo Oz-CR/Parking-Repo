@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
     private fun getRetrofit(): Retrofit {
         Log.d("LoginActivity", "Configurando Retrofit")
         return Retrofit.Builder()
-            .baseUrl("https://451d-187-190-56-49.ngrok-free.app/api/auth/")
+            .baseUrl("https://f3bf-177-244-54-50.ngrok-free.app/api/auth/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
