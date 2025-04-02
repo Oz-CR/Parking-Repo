@@ -6,7 +6,7 @@
     android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DashboardActivity">
+    tools:context=".ui.dashboard.DashboardActivity">
     
     <View
         android:id="@+id/viewHeaderBackground"
@@ -84,32 +84,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
-                android:id="@+id/layoutClients"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/layoutParking"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViews">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_28sdp"
-                    android:layout_height="@dimen/_28sdp"
-                    android:src="@drawable/ico_user"/>
-                
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:text="Usuarios"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="@dimen/_9ssp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/layoutParking"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -117,21 +91,21 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/layoutSensores"
-                app:layout_constraintStart_toEndOf="@+id/layoutClients"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViews">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_28sdp"
                     android:layout_height="@dimen/_28sdp"
-                    android:src="@drawable/ico_parking"/>
+                    android:src="@drawable/ico_parking" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:text="Estacionamiento"
+                    android:text="Abrir/Cerrar puerta"
                     android:textColor="@color/secondary_text"
-                    android:textSize="@dimen/_9ssp"/>
+                    android:textSize="@dimen/_9ssp" />
 
             </LinearLayout>
 
@@ -174,13 +148,34 @@
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardHeader">
-        
+
         <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/dashboard_element_parking" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp">
+                <include layout="@layout/dashboard_element_parking1"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp">
+                <include layout="@layout/dashboard_element_parking2"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp">
+                <include layout="@layout/dashboard_element_parking3"/>
+            </LinearLayout>
+
         </LinearLayout>
 
 
