@@ -18,9 +18,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#AE2121"
             android:orientation="vertical"
-            android:padding="24dp"
-            android:backgroundTint="#AE2121">
+            android:padding="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="#9E9E9E"
+                android:backgroundTint="#FFFFFF"
                 android:hint="Ingrese su ID de usuario"
                 android:inputType="number"
                 android:textColor="#212121"

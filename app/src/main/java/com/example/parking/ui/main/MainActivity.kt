@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity() {
     private val parkingLotList = mutableListOf<Item>()
     private lateinit var adapter: ItemAdapter
 
-    // Constantes para SharedPreferences
     private val PREFS_NAME = "MyPrefs"
     private val KEY_USERNAME = "username"
     private val KEY_PASSWORD = "password"
@@ -24,7 +23,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // Inicializar SharedPreferences y crear usuario por defecto
         val sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
         if (!sharedPreferences.contains(KEY_USERNAME)) {
             val editor = sharedPreferences.edit()
@@ -33,7 +31,9 @@ class MainActivity : AppCompatActivity() {
             editor.apply()
         }
 
-        // Inicializar RecyclerView
+        val dialog = NotificacionesActivity()
+        dialog.show(supportFragmentManager, "NotificacionesActivity")
+
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = ItemAdapter(parkingLotList)
