@@ -5,9 +5,11 @@ import com.example.parking.LoginResponse
 import com.example.parking.ProfileBody
 import com.example.parking.data.model.ParkingLotModel
 import com.example.parking.data.model.ParkingTopicsResponse
+import com.example.parking.data.model.PublishBody
 import com.example.parking.data.model.RegisterBody
 import com.example.parking.data.model.RegisterResponse
 import com.example.parking.data.model.UserModel
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,9 +25,9 @@ interface APIService {
     @POST("get/user")
     suspend fun getProfile(@Body profileBody: ProfileBody): Response<UserModel>
 
-    @GET("all")
+    @GET("all-parking-lots")
     suspend fun getTopParkingLots(): Response<ParkingTopicsResponse>
 
     @POST("publish")
-    suspend fun openGate()
+    suspend fun openGate(@Body publishBody: PublishBody): Response<ResponseBody>
 }

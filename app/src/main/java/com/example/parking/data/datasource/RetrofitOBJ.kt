@@ -9,10 +9,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitOBJ {
     companion object {
-        private const val BASE_URL_AUTH = "https://97f3-187-190-56-49.ngrok-free.app/api/auth/"
-        private const val BASE_URL_USERS = "https://97f3-187-190-56-49.ngrok-free.app/api/users/"
-        private const val BASE_URL_PARKING = "https://97f3-187-190-56-49.ngrok-free.app/api/parking/"
-        private const val BASE_URL_SENSORS = "https://97f3-187-190-56-49.ngrok-free.app/api/sensors/"
+        private const val BASE_URL_AUTH = "http://3.147.69.4:3000/api/auth/"
+        private const val BASE_URL_USERS = "http://3.147.69.4:3000/api/users/"
+        private const val BASE_URL_PARKING = "http://3.147.69.4:3000/api/parking/"
+        private const val BASE_URL_SENSORS = "http://3.147.69.4:3000/api/sensors/"
 
         fun getRetrofitAuth(context: Context): Retrofit {
             val token = context.getSharedPreferences("userToken", MODE_PRIVATE)

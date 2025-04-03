@@ -9,7 +9,6 @@ import com.example.parking.LoginBody
 import com.example.parking.data.respository.AuthRepository
 import com.example.parking.ui.dashboard.DashboardActivity
 import com.example.parking.databinding.ActivityLoginBinding
-import com.example.parking.ui.dashboard.DashboardClienteActivity
 import com.example.parking.viewmodel.LoginViewModel
 import com.example.parking.viewmodel.LoginViewModelFactory
 import io.jsonwebtoken.Claims
@@ -61,29 +60,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun irADashboard(token: String?){
-        val secretKey = "lkadjgñdsgnasjdgndngldiflkkkkkkklavgfvhjmggtñhy7u"
-        try {
-            val claims: Claims = Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secretKey.toByteArray()))
-                .build()
-                .parseClaimsJws(token)
-                .body
-
-            val userRole = claims["role"]?.toString() ?: "No se encontro un rol"
-
-            if (userRole == "Admin") {
-                val intent = Intent(this, DashboardActivity::class.java)
-                startActivity(intent)
-            } else if (userRole == "Client") {
-                val intent = Intent(this, DashboardClienteActivity::class.java)
-                startActivity(intent)
-            }
-        } catch (e: Exception) {
-            Toast.makeText(
-                this@LoginActivity,
-                "Error al iniciar sesion: ${e.message}",
-                Toast.LENGTH_LONG
-            ).show()
-        }
+            val intent = Intent(this, DashboardActivity::class.java)
+            startActivity(intent)
     }
 }

@@ -31,23 +31,10 @@
         />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/notifsBtn"
-        android:layout_width="@dimen/_26sdp"
-        android:layout_height="@dimen/_26sdp"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:layout_marginRight="@dimen/_16sdp"
-        android:src="@drawable/ico_notifs"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/textTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textTitle"
-        android:tint="@color/white"/>
-
-    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/profileBtn"
         android:layout_width="@dimen/_26sdp"
         android:layout_height="@dimen/_26sdp"
-        android:layout_marginEnd="68dp"
+        android:layout_marginEnd="20dp"
         android:src="@drawable/ico_user2"
         android:tint="@color/white"
         android:clickable="true"
@@ -92,7 +79,8 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/layoutSensores"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViews">
+                app:layout_constraintTop_toBottomOf="@+id/textViews"
+                android:clickable="true">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_28sdp"
@@ -103,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:text="Abrir/Cerrar puerta"
+                    android:text="Abrir puerta"
                     android:textColor="@color/secondary_text"
                     android:textSize="@dimen/_9ssp" />
 
@@ -118,7 +106,8 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/layoutParking"
-                app:layout_constraintTop_toBottomOf="@+id/textViews">
+                app:layout_constraintTop_toBottomOf="@+id/textViews"
+                android:clickable="true">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_28sdp"

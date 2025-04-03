@@ -23,6 +23,8 @@ class LoginViewModel(private val authRepository: AuthRepository): ViewModel() {
                     val loggedUser = response.body()
                     _token.postValue(loggedUser?.token)
                     _loginResult.postValue("Iniciaste sesion correctamente")
+                }else {
+                    _loginResult.postValue("Error al iniciar sesion")
                 }
             } catch (e: Exception) {
                 _loginResult.postValue("Error iniciando sesion, ${e.message}")

@@ -26,7 +26,7 @@
                 android:id="@+id/element_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Libre"
+                android:text="Cargando..."
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp"
                 android:textStyle="bold"
@@ -39,7 +39,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_8sdp"
-                android:text="Parking 1"
+                android:text="Cargando..."
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintEnd_toStartOf="@+id/element_text"
                 app:layout_constraintStart_toStartOf="parent"
@@ -51,6 +51,7 @@
 
     <!-- Esta card se mantiene arriba -->
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card2"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
         app:cardBackgroundColor="@color/dashboard_item_2"
