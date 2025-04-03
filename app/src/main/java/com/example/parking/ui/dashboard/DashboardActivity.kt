@@ -3,21 +3,15 @@ package com.example.parking.ui.dashboard
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import com.example.parking.ui.profile.ProfileActivity
 import com.example.parking.R
-import com.example.parking.data.model.ParkingLotModel
-import com.example.parking.data.respository.ParkingRepository
 import com.example.parking.databinding.ActivityDashboardBinding
 import com.example.parking.viewmodel.TopParkingLotsViewModel
-import com.example.parking.viewmodel.TopParkingLotsViewModelFactory
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -34,6 +28,13 @@ class DashboardActivity : AppCompatActivity() {
         binding.profileBtn.setOnClickListener() {
             irAPerfil()
         }
+
+        binding.layoutSensores.setOnClickListener() {
+            val intent = Intent(this, SensoresActivity::class.java)
+            startActivity(intent)
+
+        }
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
