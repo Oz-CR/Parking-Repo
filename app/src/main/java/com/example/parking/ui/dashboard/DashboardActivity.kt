@@ -1,3 +1,4 @@
+
 package com.example.parking.ui.dashboard
 
 import android.content.Intent
@@ -45,6 +46,12 @@ class DashboardActivity : AppCompatActivity() {
             openGate()
         }
 
+        binding.layoutSensores.setOnClickListener() {
+            val intent = Intent(this, SensoresActivity::class.java)
+            startActivity(intent)
+        }
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -79,10 +86,10 @@ class DashboardActivity : AppCompatActivity() {
 
             cardTitle.text = parkingResult.topic
 
-            if (parkingResult.text == "1") {
+            if (parkingResult.text == "0") {
                 elementText.text = "Ocupado"
                 card2.setCardBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_dark))
-            } else if (parkingResult.text == "0") {
+            } else if (parkingResult.text == "1") {
                 elementText.text = "Libre"
             }
         }

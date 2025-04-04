@@ -25,7 +25,7 @@ class ParkingRepository {
         return withContext(Dispatchers.IO) {
             RetrofitOBJ.getRetrofitSensors(App.App.instance)
                 .create(APIService::class.java)
-                .openGate(PublishBody(Datos("servo", "abrir")))
+                .openGate(PublishBody(Datos("servo", "activar")))
         }
     }
 }
