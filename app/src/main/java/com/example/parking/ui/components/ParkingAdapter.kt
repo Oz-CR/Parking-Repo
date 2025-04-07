@@ -3,6 +3,7 @@ package com.example.parking.ui.components
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parking.R
 import com.example.parking.data.model.Result
@@ -17,13 +18,23 @@ class ParkingAdapter(
         private val binding = ItemCardBinding.bind(view)
 
         fun bind(parkingResult: Result) {
+            // Configura el título del parking
             binding.cardTitle.text = parkingResult.topic
+
+            // Configura el estado del parking
             binding.elementText.text = when (parkingResult.text) {
                 "0" -> "Ocupado"
                 "1" -> "Libre"
                 else -> "Cargando..."
             }
-            // El color de card2 y la imagen se mantienen como en el XML
+
+            // Cambia el color de fondo de la tarjeta superpuesta (card2) según el estado
+            val color = when (parkingResult.text) {
+                "0" -> ContextCompat.getColor(binding.root.context, android.R.color.holo_red_dark) // Rojo para ocupado
+                "1" -> ContextCompat.getColor(binding.root.context, android.R.color.holo_green_dark) // Verde para libre
+                else -> ContextCompat.getColor(binding.root.context, R.color.dashboard_item_2) // Color por defecto
+            }
+            binding.card2.setCardBackgroundColor(color)
         }
     }
 
