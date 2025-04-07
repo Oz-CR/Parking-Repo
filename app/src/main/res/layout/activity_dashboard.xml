@@ -27,8 +27,7 @@
         android:textSize="@dimen/_20ssp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/profileBtn"
@@ -41,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textTitle"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"/>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardHeader"
@@ -68,7 +67,7 @@
                 android:textSize="@dimen/_14ssp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <LinearLayout
                 android:id="@+id/layoutParking"
@@ -85,7 +84,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_28sdp"
                     android:layout_height="@dimen/_28sdp"
-                    android:src="@drawable/ico_parking" />
+                    android:src="@drawable/ico_parking"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,7 +92,7 @@
                     android:layout_marginTop="@dimen/_4sdp"
                     android:text="Abrir puerta"
                     android:textColor="@color/secondary_text"
-                    android:textSize="@dimen/_9ssp" />
+                    android:textSize="@dimen/_9ssp"/>
 
             </LinearLayout>
 
@@ -128,45 +127,50 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-        <ScrollView
+    <!-- SwipeRefreshLayout envolviendo el RecyclerView -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/cardHeader"
+        app:layout_constraintBottom_toTopOf="@+id/buttonContainer">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewParking"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:overScrollMode="never"
             android:padding="@dimen/_16sdp"
-            android:scrollbars="none"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardHeader">
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
 
-            <LinearLayout
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_16sdp">
-                    <include layout="@layout/dashboard_element_parking1"/>
-                </LinearLayout>
+    <!-- Contenedor para los botones -->
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="@dimen/_16sdp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_16sdp">
-                    <include layout="@layout/dashboard_element_parking2"/>
-                </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar Parking"
+            android:layout_marginEnd="@dimen/_8sdp"
+            app:cornerRadius="@dimen/_8sdp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_16sdp">
-                    <include layout="@layout/dashboard_element_parking3"/>
-                </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/removeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eliminar Parking"
+            app:cornerRadius="@dimen/_8sdp"/>
 
-            </LinearLayout>
-
-        </ScrollView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

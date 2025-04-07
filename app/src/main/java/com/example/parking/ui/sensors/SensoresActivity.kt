@@ -60,10 +60,5 @@ class SensoresActivity : AppCompatActivity() {
             val intent = Intent(this, InfoHumedadActivity::class.java)
             startActivity(intent)
         }
-
-        binding.cardSensorAgua.setOnClickListener() {
-            val intent = Intent(this, InfoAguaActivity::class.java)
-            startActivity(intent)
-        }
     }
 }
