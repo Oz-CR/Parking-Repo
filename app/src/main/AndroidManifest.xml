@@ -19,7 +19,6 @@
         android:theme="@style/Base.Theme.Parking"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
         <activity
             android:name=".ui.sensors.InfoAguaActivity"
             android:exported="false" />

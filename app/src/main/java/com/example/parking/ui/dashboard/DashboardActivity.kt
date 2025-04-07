@@ -3,6 +3,7 @@ package com.example.parking.ui.dashboard
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +34,8 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var topParkingLotsViewModel: TopParkingLotsViewModel
     private lateinit var parkingAdapter: ParkingAdapter
     private val parkingRepository = ParkingRepository()
-    private val parkingList = mutableListOf<Result>()
+    private val parkingList = mutableListOf<Result>() // Lista completa de parkings (servidor + locales)
+    private val localParkings = mutableListOf<Result>() // Lista de parkings creados localmente
     private lateinit var sharedPreferences: SharedPreferences
     private val gson = Gson()
 
@@ -64,8 +66,18 @@ class DashboardActivity : AppCompatActivity() {
 
     private fun configurarRecyclerView() {
         parkingAdapter = ParkingAdapter(parkingList) { position ->
-            // Callback cuando se elimina un parking
-            saveParkings()
+            try {
+                // No necesitamos acceder a parkingList[position] aquí, ya que la eliminación ya ocurrió
+                // Solo actualizamos localParkings y guardamos los cambios
+                // Sincronizamos localParkings con parkingList
+                localParkings.removeAll { localParking ->
+                    !parkingList.contains(localParking)
+                }
+                saveParkings()
+            } catch (e: Exception) {
+                Log.e("DashboardActivity", "Error al actualizar localParkings: ${e.message}", e)
+                Toast.makeText(this, "Error al eliminar el parking", Toast.LENGTH_SHORT).show()
+            }
         }
         binding.recyclerViewParking.apply {
             layoutManager = LinearLayoutManager(this@DashboardActivity)
@@ -85,7 +97,14 @@ class DashboardActivity : AppCompatActivity() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                parkingAdapter.removeParkingAt(position)
+                // Validar que la posición sea válida antes de eliminar
+                if (position in 0 until parkingList.size) {
+                    parkingAdapter.removeParkingAt(position)
+                } else {
+                    Log.e("DashboardActivity", "Posición inválida al deslizar: $position")
+                    Toast.makeText(this@DashboardActivity, "Error al eliminar el parking", Toast.LENGTH_SHORT).show()
+                    parkingAdapter.notifyDataSetChanged() // Refrescar el adaptador para evitar inconsistencias
+                }
             }
         }
 
@@ -102,9 +121,9 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         binding.addButton.setOnClickListener {
-            // Calcular el número del próximo lugar
+            // Calcular el número del próximo lugar, comenzando desde "Lugar 4"
             val nextNumber = if (parkingList.isEmpty()) {
-                4 // Comenzar desde "Lugar 4" si la lista está vacía
+                4 // Comenzar desde "Lugar 4"
             } else {
                 // Buscar el número más alto en los nombres de los parkings
                 val maxNumber = parkingList
@@ -122,6 +141,7 @@ class DashboardActivity : AppCompatActivity() {
                 text = "1" // 1 = libre
             )
             parkingAdapter.addParking(newParking)
+            localParkings.add(newParking) // Agregar a la lista de parkings locales
             saveParkings() // Guardar después de agregar
         }
 
@@ -139,8 +159,18 @@ class DashboardActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle("Seleccionar Parking para Eliminar")
                 .setItems(parkingNames) { _, which ->
-                    // Eliminar el parking seleccionado
-                    parkingAdapter.removeParkingAt(which)
+                    try {
+                        // Validar que el índice sea válido
+                        if (which in 0 until parkingList.size) {
+                            parkingAdapter.removeParkingAt(which)
+                        } else {
+                            Log.e("DashboardActivity", "Índice inválido al eliminar desde diálogo: $which")
+                            Toast.makeText(this, "Error al eliminar el parking", Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: Exception) {
+                        Log.e("DashboardActivity", "Error al eliminar desde diálogo: ${e.message}", e)
+                        Toast.makeText(this, "Error al eliminar el parking", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 .setNegativeButton("Cancelar") { dialog, _ ->
                     dialog.dismiss()
@@ -151,7 +181,6 @@ class DashboardActivity : AppCompatActivity() {
 
     private fun configurarSwipeRefresh() {
         binding.swipeRefreshLayout.setOnRefreshListener {
-            // Recargar datos del ViewModel
             topParkingLotsViewModel.loadTopParkingLots()
         }
     }
@@ -165,7 +194,22 @@ class DashboardActivity : AppCompatActivity() {
         topParkingLotsViewModel.topParkingLots.observe(this) { response ->
             if (response.isSuccessful) {
                 response.body()?.let { parkingData ->
-                    parkingAdapter.updateParkings(parkingData.results)
+                    // Combinar los parkings del servidor con los parkings locales
+                    val serverParkings = parkingData.results.toMutableList()
+                    val combinedParkings = mutableListOf<Result>()
+
+                    // Agregar los parkings del servidor
+                    combinedParkings.addAll(serverParkings)
+
+                    // Agregar los parkings locales que no están en el servidor
+                    localParkings.forEach { localParking ->
+                        if (combinedParkings.none { it.topic == localParking.topic }) {
+                            combinedParkings.add(localParking)
+                        }
+                    }
+
+                    // Actualizar la lista del adaptador
+                    parkingAdapter.updateParkings(combinedParkings)
                     saveParkings() // Guardar los datos actualizados
                 }
             } else {
@@ -200,20 +244,39 @@ class DashboardActivity : AppCompatActivity() {
 
     // Guardar los parkings en SharedPreferences
     private fun saveParkings() {
-        val editor = sharedPreferences.edit()
-        val json = gson.toJson(parkingList)
-        editor.putString("parkings", json)
-        editor.apply()
+        try {
+            val editor = sharedPreferences.edit()
+            val json = gson.toJson(parkingList)
+            val localJson = gson.toJson(localParkings)
+            editor.putString("parkings", json)
+            editor.putString("local_parkings", localJson) // Guardar también los parkings locales
+            editor.apply()
+        } catch (e: Exception) {
+            Log.e("DashboardActivity", "Error al guardar parkings: ${e.message}", e)
+            Toast.makeText(this, "Error al guardar los datos", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // Cargar los parkings desde SharedPreferences
     private fun loadSavedParkings() {
-        val json = sharedPreferences.getString("parkings", null)
-        if (json != null) {
-            val type = object : TypeToken<MutableList<Result>>() {}.type
-            val savedParkings: MutableList<Result> = gson.fromJson(json, type)
-            parkingList.clear()
-            parkingList.addAll(savedParkings)
+        try {
+            val json = sharedPreferences.getString("parkings", null)
+            val localJson = sharedPreferences.getString("local_parkings", null)
+            if (json != null) {
+                val type = object : TypeToken<MutableList<Result>>() {}.type
+                val savedParkings: MutableList<Result> = gson.fromJson(json, type)
+                parkingList.clear()
+                parkingList.addAll(savedParkings)
+            }
+            if (localJson != null) {
+                val type = object : TypeToken<MutableList<Result>>() {}.type
+                val savedLocalParkings: MutableList<Result> = gson.fromJson(localJson, type)
+                localParkings.clear()
+                localParkings.addAll(savedLocalParkings)
+            }
+        } catch (e: Exception) {
+            Log.e("DashboardActivity", "Error al cargar parkings: ${e.message}", e)
+            Toast.makeText(this, "Error al cargar los datos", Toast.LENGTH_SHORT).show()
         }
     }
 }
