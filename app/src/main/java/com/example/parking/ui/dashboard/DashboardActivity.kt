@@ -94,6 +94,7 @@ class DashboardActivity : AppCompatActivity() {
 
     private fun configurarListeners() {
         binding.profileBtn.setOnClickListener { irAPerfil() }
+
         binding.layoutParking.setOnClickListener { openGate() }
         binding.layoutSensores.setOnClickListener {
             startActivity(Intent(this, SensoresActivity::class.java))
