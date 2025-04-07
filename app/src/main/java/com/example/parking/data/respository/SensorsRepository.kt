@@ -3,6 +3,7 @@ package com.example.parking.data.respository
 import com.example.parking.App
 import com.example.parking.data.datasource.APIService
 import com.example.parking.data.datasource.RetrofitOBJ
+import com.example.parking.data.model.HistoryResponse
 import com.example.parking.data.model.ParkingTopicsResponse
 import com.example.parking.data.model.ResultSensors
 import com.example.parking.data.model.SensorsResponse
@@ -40,6 +41,30 @@ class SensorsRepository {
             RetrofitOBJ.getRetrofitSensors(App.App.instance)
                 .create(APIService::class.java)
                 .getLuz()
+        }
+    }
+
+    suspend fun getTemperatureData(): Response<HistoryResponse> {
+        return withContext(Dispatchers.IO) {
+            RetrofitOBJ.getRetrofitData(App.App.instance)
+                .create(APIService::class.java)
+                .getTemperatureData()
+        }
+    }
+
+    suspend fun getWaterData(): Response<HistoryResponse> {
+        return withContext(Dispatchers.IO) {
+            RetrofitOBJ.getRetrofitData(App.App.instance)
+                .create(APIService::class.java)
+                .getWaterData()
+        }
+    }
+
+    suspend fun getHumityData(): Response<HistoryResponse> {
+        return withContext(Dispatchers.IO) {
+            RetrofitOBJ.getRetrofitData(App.App.instance)
+                .create(APIService::class.java)
+                .getHumityData()
         }
     }
 }

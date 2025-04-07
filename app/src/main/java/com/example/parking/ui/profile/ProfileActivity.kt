@@ -1,6 +1,8 @@
 package com.example.parking.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -8,6 +10,8 @@ import com.example.parking.ProfileBody
 import com.example.parking.databinding.ActivityProfileBinding
 import com.example.parking.data.datasource.APIService
 import com.example.parking.data.respository.UsersRepository
+import com.example.parking.ui.auth.LoginActivity
+import com.example.parking.ui.inicio.InicioActivity
 import com.example.parking.utils.HeaderInterceptor
 import com.example.parking.utils.JWTUtils
 import com.example.parking.viewmodel.ProfileViewModel
@@ -39,6 +43,8 @@ class ProfileActivity : AppCompatActivity() {
         val token = getTokenFromSP()
         val UserId = JWTUtils.getUserIdFromToken(token)
 
+        Log.d("ProfileActivity", "UserID extraído del token: $UserId")
+
         profileViewModel.getProfile(ProfileBody(UserId))
 
         profileViewModel.profileData.observe(this) {profile ->
@@ -52,6 +58,10 @@ class ProfileActivity : AppCompatActivity() {
             binding.userEmail.visibility = View.INVISIBLE
             binding.userRole.visibility = View.INVISIBLE
         }
+
+        binding.logoutBtn.setOnClickListener() {
+            logOut()
+        }
     }
 
     private fun getTokenFromSP(): String{
@@ -59,5 +69,14 @@ class ProfileActivity : AppCompatActivity() {
         val token: String = sharedPreferences.getString("token", "") ?: ""
 
         return token
+    }
+
+    private fun logOut() {
+        val SP = getSharedPreferences("userToken", MODE_PRIVATE)
+        SP.edit().clear().apply()
+
+        val intent = Intent(this, InicioActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }

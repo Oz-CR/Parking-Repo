@@ -22,6 +22,8 @@ class ProfileViewModel(private val usersRepository: UsersRepository): ViewModel(
                 val response = usersRepository.getProfile(profileBody)
                 if(response.isSuccessful) {
                     _profileData.postValue(response.body())
+                } else {
+                    _errorMessage.postValue("Error del servidor: ${response.code()} - ${response.message()}")
                 }
             } catch (e: Exception) {
                 _errorMessage.postValue("Error consultando el perfil: ${e.message}")

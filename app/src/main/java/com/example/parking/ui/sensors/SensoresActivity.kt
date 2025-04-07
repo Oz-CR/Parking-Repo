@@ -1,11 +1,10 @@
-package com.example.parking.ui.dashboard
+package com.example.parking.ui.sensors
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.parking.R
 import com.example.parking.data.respository.SensorsRepository
-import com.example.parking.databinding.ActivityDashboardBinding
 import com.example.parking.databinding.ActivitySensoresDetailBinding
 import com.example.parking.viewmodel.SensorsViewModel
 import com.example.parking.viewmodel.SensoresViewModelFactory
@@ -36,8 +35,8 @@ class SensoresActivity : AppCompatActivity() {
 
         sensorsViewModel.aguaData.observe(this) { result ->
             binding.loadingAgua.text = when (result.text) {
-                "0" -> "Detectada"
-                "1" -> "No detectada"
+                "0" -> "Lluvia Detectada"
+                "1" -> "No se Detecta Lluvia"
                 else -> "Desconocido"
             }
         }
@@ -51,5 +50,20 @@ class SensoresActivity : AppCompatActivity() {
         }
 
         sensorsViewModel.fetchSensorsData()
+
+        binding.cardTemperatura.setOnClickListener() {
+            val intent = Intent(this, InfoTemperaturaActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.cardHumedad.setOnClickListener() {
+            val intent = Intent(this, InfoHumedadActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.cardSensorAgua.setOnClickListener() {
+            val intent = Intent(this, InfoAguaActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

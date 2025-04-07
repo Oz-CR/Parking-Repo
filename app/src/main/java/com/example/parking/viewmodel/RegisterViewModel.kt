@@ -18,7 +18,7 @@ class RegisterViewModel(private val authRepository: AuthRepository): ViewModel()
             try {
                 val response = authRepository.registerUser(registerBody)
                 if (response.isSuccessful) {
-                    _registerResult.postValue(response.body()?.message ?: "Registro exitoso")
+                    _registerResult.postValue("Registro Exitoso")
                 } else {
                     _registerResult.postValue("Error en registro: ${response.errorBody()?.string()}")
                 }

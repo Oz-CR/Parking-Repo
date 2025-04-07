@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SENSORES PARKING"
+        android:text="Informacion de Sensores"
         android:layout_marginEnd="30px"
         android:textAlignment="center"
         android:textSize="18sp"
@@ -32,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:clickable="true"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
@@ -77,6 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:clickable="true"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
@@ -122,6 +124,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:clickable="true"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
@@ -167,6 +170,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:clickable="true"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 

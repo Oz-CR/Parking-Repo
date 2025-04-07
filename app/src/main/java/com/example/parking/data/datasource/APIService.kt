@@ -3,6 +3,7 @@ package com.example.parking.data.datasource
 import com.example.parking.LoginBody
 import com.example.parking.LoginResponse
 import com.example.parking.ProfileBody
+import com.example.parking.data.model.HistoryResponse
 import com.example.parking.data.model.ParkingLotModel
 import com.example.parking.data.model.ParkingTopicsResponse
 import com.example.parking.data.model.PublishBody
@@ -44,4 +45,13 @@ interface APIService {
 
     @GET("logs/sensor_luz")
     suspend fun getLuz(): Response<ResultSensors>
+
+    @GET("history/temperatura")
+    suspend fun getTemperatureData(): Response<HistoryResponse>
+
+    @GET("history/sensor_agua")
+    suspend fun getWaterData(): Response<HistoryResponse>
+
+    @GET("history/humedad")
+    suspend fun getHumityData(): Response<HistoryResponse>
 }

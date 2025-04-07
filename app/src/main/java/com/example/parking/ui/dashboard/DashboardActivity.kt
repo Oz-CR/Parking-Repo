@@ -3,7 +3,6 @@ package com.example.parking.ui.dashboard
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -17,12 +16,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.parking.ui.profile.ProfileActivity
 import com.example.parking.R
-import com.example.parking.data.model.ParkingLotModel
 import com.example.parking.data.respository.ParkingRepository
 import com.example.parking.databinding.ActivityDashboardBinding
 import com.example.parking.viewmodel.TopParkingLotsViewModel
 import com.example.parking.viewmodel.TopParkingLotsViewModelFactory
 import com.example.parking.data.model.Result
+import com.example.parking.ui.sensors.SensoresActivity
 import kotlinx.coroutines.launch
 
 class DashboardActivity : AppCompatActivity() {

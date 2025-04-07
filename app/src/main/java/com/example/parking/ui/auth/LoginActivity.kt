@@ -9,11 +9,13 @@ import com.example.parking.LoginBody
 import com.example.parking.data.respository.AuthRepository
 import com.example.parking.ui.dashboard.DashboardActivity
 import com.example.parking.databinding.ActivityLoginBinding
+import com.example.parking.utils.JWTUtils
 import com.example.parking.viewmodel.LoginViewModel
 import com.example.parking.viewmodel.LoginViewModelFactory
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import java.util.Date
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,6 +24,16 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPreferences = getSharedPreferences("userToken", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", "")
+
+        if (!token.isNullOrEmpty() && !JWTUtils.validarToken(token)) {
+            irADashboard()
+            finish()
+            return
+        }
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -34,8 +46,9 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.token.observe(this) {token ->
             token?.let {
-                guardaTokenSP(it)
-                irADashboard(it)
+                guardaTokenSP(token)
+                irADashboard()
+                finish()
             }
         }
 
@@ -59,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    private fun irADashboard(token: String?){
+    private fun irADashboard(){
             val intent = Intent(this, DashboardActivity::class.java)
             startActivity(intent)
     }

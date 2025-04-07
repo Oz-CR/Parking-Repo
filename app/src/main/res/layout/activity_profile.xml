@@ -72,5 +72,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userAvatar2" />
 
+    <Button
+        android:id="@+id/logoutBtn"
+        android:layout_width="149dp"
+        android:layout_height="51dp"
+        android:text="Cerrar Sesion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userEmail" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
